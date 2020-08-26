@@ -10,16 +10,8 @@ SUMA=0;
 
 for i=[1:(KRAJ-1)];
 
-    if ( mod(i,M1) ==0 )
+    if or( (mod(i,M1)==0), ( mod(i,M2)==0) )
         SUMA=SUMA+i;
-        disp(i)
-    end
-    if ( mod(i,M2) ==0 )
-        SUMA=SUMA+i;
-        disp(i)
-    end
-    if and( (mod(i,M1)==0), ( mod(i,M2)==0) )
-        SUMA=SUMA-i;
         disp(i)
     end
 
