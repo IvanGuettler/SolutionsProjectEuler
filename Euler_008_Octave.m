@@ -28,12 +28,11 @@ close all; clear all; clc
 A=load('./input_Euler_008_Octave.txt');
 B=nan(1,1000); br=0;
 
-for line=[1:20];
-temp=A(line);
-for numb=[1:50];
+for line=[1:1];
+temp=A(line)
+for numb=[49:-1:0];
     br=br+1;
-    B(1,br)=  mod(temp,10);
-    temp   =floor(temp/10);
+    B(1,br)=  floor(temp/10^numb);
+    temp=temp-B(1,br)*10^numb;
 end
-    B(1, (1+(line-1)*50) : (line*50) )=fliplr( B(1, (1+(line-1)*50) : (line*50)) );
 end
