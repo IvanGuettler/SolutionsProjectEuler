@@ -25,14 +25,25 @@
 
 close all; clear all; clc
 
-A=load('./input_Euler_008_Octave.txt');
-B=nan(1,1000); br=0;
+        fid       = fopen('./input_Euler_008_Octave.txt');
+	br        = 1;
+        tline     = fgetl(fid);
+	matrica(br,1:50) = str2double(regexp(num2str(tline),'\d','match'));
+while ischar(tline)
+        disp(tline)
+        tline            = fgetl(fid);
+	br               = br+1;
+	matrica(br,1:50) = str2double(regexp(num2str(tline),'\d','match'));
+end
+fclose(fid);
 
-for line=[1:1];
-temp=A(line)
-for numb=[49:-1:0];
-    br=br+1;
-    B(1,br)=  floor(temp/10^numb);
-    temp=temp-B(1,br)*10^numb;
+	matrica=matrica(1:20,1:50);
+	matrica=matrica';
+	vektor=matrica(:);
+
+N=length(vektor);	
+for i=1:N-12;
+	produkt(i)=prod(vektor(i:i+12));
 end
-end
+
+	disp(['---------------->',num2str(max(produkt(:)))]);
