@@ -4,14 +4,18 @@
 
 clear all; close all; clc
 
-LIM  =2*1000*1000;
-LIM=10;
+LIM   =2*1000*1000;
+Suma  =0;
+Option=2; % 1: brute force (very slow)
+          % 2: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes (117.934 sec/  2020-09-06 ThinkPad laptop)
+
+tic
+
+if (Option==1);
+
 PNs  =1;
 Num  =1;
 PN(1)=1;
-Suma =0;
-
-tic
 
 while Num<LIM;
 
@@ -34,9 +38,11 @@ while Num<LIM;
             else
 
               if (dummy==Num);
-                disp(['----->',num2str(PNs),'.  ------->',num2str(Num)])
                 PN(PNs)  =Num;
                 PNs      =PNs+1;
+                if (mod(PNs,100)==0);
+                    disp(['----->',num2str(PNs),'.  ------->',num2str(Num)])
+                end
                 Suma     =Suma+Num;
                 if (Num>LIM);
                     Suma=Suma-Num;
@@ -55,6 +61,30 @@ while Num<LIM;
 
 end
 
+end %Option=1 brute force
+
+%-------------------------------------------------------------------------------
+
+if (Option==2) % https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+
+    A(1:LIM)=1;
+    A(1)    =0;
+    LIM2=floor(sqrt(LIM));
+
+    for i=[2:LIM2];
+        VEKTOR=[0:LIM];
+        RASPON=VEKTOR.*i+i^2; CLEAN=find(RASPON(:)<=LIM); RASPON=RASPON(CLEAN);
+        if (A(i)==1);
+            for j=[RASPON]
+              A(j)=0;
+            end % j
+        end     % if
+    end         % i
+
+end
+Suma=sum(find(A==1));
 disp(['-------------->',num2str(Suma)])
+
+%-------------------------------------------------------------------------------
 
 toc
