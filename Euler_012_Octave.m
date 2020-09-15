@@ -19,65 +19,150 @@
 clear all; close all; clc
 tic
 
+option=2 %1 Naive, too slow
+         %2 https://www.geeksforgeeks.org/first-triangular-number-whose-number-of-divisors-exceeds-n
+	 %  https://mathschallenge.net/library/number/number_of_divisors
+
+if (option==1);
+
               test=0;
 generatingTriangle=1;
 
                 NaturalNumber =1;
  TriangleNumber(NaturalNumber)=1;
 
-while (test==0)
+	while (test==0)
 
-	while (generatingTriangle==1)
-		%-----------------------------
-		%Generate next triangle number
-		%-----------------------------
-		NaturalNumber     =NaturalNumber+1;
-		TriangleNumber(NaturalNumber)=TriangleNumber(NaturalNumber-1)+NaturalNumber;
-		%--> disp(['--------------------------->Triangle number:',num2str(TriangleNumber(NaturalNumber))]);
+		while (generatingTriangle==1)
+			%-----------------------------
+			%Generate next triangle number
+			%-----------------------------
+			NaturalNumber     =NaturalNumber+1;
+			TriangleNumber(NaturalNumber)=TriangleNumber(NaturalNumber-1)+NaturalNumber;
+			disp(['--------------------------->Triangle number:',num2str(TriangleNumber(NaturalNumber))]);
 
 
-		%-----------------------------
-		%Find all factors of the triangle number
-		%-----------------------------
-		Fact=0;
-		for Factor=[1:TriangleNumber(NaturalNumber)];
-			if (mod(TriangleNumber(NaturalNumber),Factor)==0);
+			%-----------------------------
+			%Find all factors of the triangle number
+			%-----------------------------
+			Fact=0;
+			for Factor=[1:TriangleNumber(NaturalNumber)];
+				if (mod(TriangleNumber(NaturalNumber),Factor)==0);
 				Fact=Fact+1;
+				end
+			end
+
+
+			%-----------------------------
+			%Print triangle number factors
+			%-----------------------------
+			%disp('----------------->Factors');
+			TriangleNumberFactor{NaturalNumber,:}
+
+			%-----------------------------
+			%Print number of factors
+			%-----------------------------
+			disp(['----------------->Number of factors:',num2str(Fact)]);
+
+
+			%-----------------------------
+			%Stop everything
+			%-----------------------------
+			if (Fact>5);
+				test              =1;
+				generatingTriangle=0;
+				disp(['----------------------------'])
+				disp(['--------SOLUTION------------'])
+				disp(['----------------------------'])
+				TriangleNumber(NaturalNumber)
+				break
 			end
 		end
 
-
-		%-----------------------------
-		%Print triangle number factors
-		%-----------------------------
-		%disp('----------------->Factors');
-		%--> TriangleNumberFactor{NaturalNumber,:}
-
-		%-----------------------------
-		%Print number of factors
-		%-----------------------------
-		%--> disp(['----------------->Number of factors:',num2str(Fact)]);
-
-
-		%-----------------------------
-		%Stop everything
-		%-----------------------------
-		if (Fact>500);
-			test              =1;
-			generatingTriangle=0;
-			disp(['----------------------------'])
-			disp(['--------SOLUTION------------'])
-			disp(['----------------------------'])
-			TriangleNumber(NaturalNumber)
-			break
-		end
 	end
 
-end
+% Option 2
+elseif (option==2);
+
+              test=0;
+generatingTriangle=1;
+
+                NaturalNumber =1;
+ TriangleNumber(NaturalNumber)=1;
+
+	while (test==0)
+
+		while (generatingTriangle==1)
+			%-----------------------------
+			%Generate next triangle number
+			%-----------------------------
+			NaturalNumber     =NaturalNumber+1;
+			TriangleNumber(NaturalNumber)=(NaturalNumber+1)*NaturalNumber/2;
+			%disp(['--------------------------->Triangle number:',num2str(TriangleNumber(NaturalNumber))]);
+
+			%-----------------------------
+			%Find all factors of the triangle number i.e. of the coprimes
+			%-----------------------------
+			Fact=1;
+
+			if (mod(NaturalNumber,2)==0);
+				A=(NaturalNumber/2);
+				for Factor=[1:A];
+					if (mod(A,Factor)==0);
+						Fact=Fact+1;
+					end
+				end
+				A=NaturalNumber+1;
+				for Factor=[1:A];
+					if (mod(A,Factor)==0);
+						Fact=Fact+1;
+					end
+				end
+			else 
+				A=NaturalNumber;
+				for Factor=[1:A];
+					if (mod(A,Factor)==0);
+						Fact=Fact+1;
+					end
+				end
+				A=(NaturalNumber+1)/2;
+				for Factor=[1:A];
+					if (mod(A,Factor)==0);
+						Fact=Fact+1;
+					end
+				end
+
+			end
+
+			%-----------------------------
+			%Stop everything
+			%-----------------------------
+			if (Fact>50);
+				test              =1;
+				generatingTriangle=0;
+				disp(['----------------------------'])
+				disp(['--------SOLUTION------------'])
+				disp(['----------------------------'])
+				TriangleNumber(NaturalNumber)
+				break
+			end
+		end
+
+	end
+
+end %options
 
 
 toc
 
-%   5 : < 1  sec
-%  50 : ~31  sec
-% 500 :
+% Option 1
+%   5 :  < 1  sec
+%  50 :  ~31  sec
+% 100 : ~167  sec
+% 250 : too long  sec
+
+% Option 2
+%  https://www.geeksforgeeks.org/first-triangular-number-whose-number-of-divisors-exceeds-n/
+%  inefficient still in my implementation
+% 50 :
+
