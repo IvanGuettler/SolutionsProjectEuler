@@ -19,9 +19,9 @@
 clear all; close all; clc
 tic
 
-option=2 %1 Naive, too slow
-         %2 https://www.geeksforgeeks.org/first-triangular-number-whose-number-of-divisors-exceeds-n
-	 %  https://mathschallenge.net/library/number/number_of_divisors
+option=3 %1 Too slow: naive approach
+         %2 Still too slow: https://www.geeksforgeeks.org/first-triangular-number-whose-number-of-divisors-exceeds-n
+	       %3 https://mathschallenge.net/library/number/number_of_divisors
 
 if (option==1);
 
@@ -118,7 +118,7 @@ generatingTriangle=1;
 						Fact=Fact+1;
 					end
 				end
-			else 
+			else
 				A=NaturalNumber;
 				for Factor=[1:A];
 					if (mod(A,Factor)==0);
@@ -150,6 +150,49 @@ generatingTriangle=1;
 
 	end
 
+  % Option 3
+  elseif (option==3);
+
+                test=0;
+  generatingTriangle=1;
+
+                  NaturalNumber =1;
+   TriangleNumber(NaturalNumber)=1;
+
+  	while (test==0)
+
+  		while (generatingTriangle==1)
+  			%-----------------------------
+  			%Generate next triangle number
+  			%-----------------------------
+  			NaturalNumber     =NaturalNumber+1;
+  			TriangleNumber(NaturalNumber)=(NaturalNumber+1)*NaturalNumber/2;
+
+  			%-----------------------------
+  			%Find all factors of the triangle number i.e. of the coprimes
+  			%-----------------------------
+  			[F,N]=factor(TriangleNumber(NaturalNumber));
+        % ---> https://mathschallenge.net/library/number/number_of_divisors
+        % We begin by writing the number as a product of prime factors: n = paqbrc...
+        % then the number of divisors, d(n) = (a+1)(b+1)(c+1)...
+        Fact=prod(N(:)+1);
+
+  			%-----------------------------
+  			%Stop everything
+  			%-----------------------------
+  			if (Fact>500);
+  				test              =1;
+  				generatingTriangle=0;
+  				disp(['----------------------------'])
+  				disp(['--------SOLUTION------------'])
+  				disp(['----------------------------'])
+  				TriangleNumber(NaturalNumber)
+  				break
+  			end
+  		end
+
+  	end
+
 end %options
 
 
@@ -164,5 +207,6 @@ toc
 % Option 2
 %  https://www.geeksforgeeks.org/first-triangular-number-whose-number-of-divisors-exceeds-n/
 %  inefficient still in my implementation
-% 50 :
 
+% Option 3
+% 500 : 11.22 sec
